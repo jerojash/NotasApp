@@ -1,4 +1,5 @@
 import 'package:notes_app/notes_app.dart';
+import 'controllers/notas_controller.dart';
 
 /// This type initializes an application.
 ///
@@ -23,16 +24,37 @@ class NotesAppChannel extends ApplicationChannel {
   /// of all [Request]s.
   ///
   /// This method is invoked after [prepare].
-  @override
-  Controller get entryPoint {
-    final router = Router();
+  // @override
+  // Controller get entryPoint {
+  //   final router = Router();
 
-    // Prefer to use `link` instead of `linkFunction`.
-    // See: https://conduit.io/docs/http/request_controller/
-    router.route("/example").linkFunction((request) async {
-      return Response.ok({"key": "value"});
+  //   // Prefer to use `link` instead of `linkFunction`.
+  //   // See: https://conduit.io/docs/http/request_controller/
+  //   router.route("/example").linkFunction((request) async {
+  //     return Response.ok({"key": "value"});
+  //   });
+
+  //   return router;
+  // }
+
+  @override
+Controller get entryPoint {
+  final router = Router();
+
+  // router
+  //   .route('/notes')
+  //   .link(() => NotesController());
+
+  router
+  .route('/notes/[:id]')
+  .link(() => NotesController());
+
+  router
+    .route('/example')
+    .linkFunction((request) async {
+      return Response.ok({'key': 'value'});
     });
 
-    return router;
-  }
+  return router;
+}
 }
