@@ -1,26 +1,30 @@
 import 'package:conduit_core/conduit_core.dart';
 import 'package:notes_app/notes_app.dart';
+import 'package:notes_app/model/note.dart';
 
 class NotesController extends ResourceController{
-  final _notes = [
-    {'id': 11, 'name': 'Mr. Nice'},
-    {'id': 12, 'name': 'Narco'},
-    {'id': 13, 'name': 'Bombasto'},
-    {'id': 14, 'name': 'Celeritas'},
-    {'id': 15, 'name': 'Magneta'},
-    {'id': 122, 'name': 'Null'}    
-  ];
 
+  NotesController(this.context);
+
+  final ManagedContext context;  
 
   @Operation.get()
-  Future<Response> getAllNotes() async {
-      return Response.ok(_notes);
-  }
+  Future<Response> getAllHeroes({@Bind.query('n_clave') String? n_clave}) async {
+    final heroQuery = Query<Note>(context);
+    if (n_clave != null) {
+      heroQuery.where((h) => h.n_clave).contains(n_clave, caseSensitive: false);
+    }
+    final heroes = await heroQuery.fetch();
 
+    return Response.ok(heroes);
+}
 
   @Operation.get('id')
   Future<Response> getHeroByID(@Bind.path('id') int id) async {
-    final note = _notes.firstWhere((note) => note['id'] == id);
+    final noteQuery = Query<Note>(context)
+    ..where((h) => h.n_clave).equalTo(id);    
+
+    final note = await noteQuery.fetchOne();
     
     if (note == false) {
       return Response.notFound();

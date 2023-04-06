@@ -1,4 +1,6 @@
+import 'package:conduit_postgresql/src/postgresql_persistent_store.dart';
 import 'package:notes_app/notes_app.dart';
+
 import 'controllers/notas_controller.dart';
 
 /// This type initializes an application.
@@ -6,55 +8,45 @@ import 'controllers/notas_controller.dart';
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://conduit.io/docs/http/channel/.
 class NotesAppChannel extends ApplicationChannel {
+  //late ManagedContext context;
   /// Initialize services in this method.
   ///
   /// Implement this method to initialize services, read values from [options]
   /// and any other initialization required before constructing [entryPoint].
   ///
   /// This method is invoked prior to [entryPoint] being accessed.
+  late ManagedContext context;
+  
+
   @override
   Future prepare() async {
-    logger.onRecord.listen(
-        (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+    logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+
+    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
+    final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
+      "note_user", "admin", "localhost", 5432, "note_app");
+
+    context = ManagedContext(dataModel, persistentStore);
   }
 
-  /// Construct the request channel.
-  ///
-  /// Return an instance of some [Controller] that will be the initial receiver
-  /// of all [Request]s.
-  ///
-  /// This method is invoked after [prepare].
-  // @override
-  // Controller get entryPoint {
-  //   final router = Router();
-
-  //   // Prefer to use `link` instead of `linkFunction`.
-  //   // See: https://conduit.io/docs/http/request_controller/
-  //   router.route("/example").linkFunction((request) async {
-  //     return Response.ok({"key": "value"});
-  //   });
-
-  //   return router;
-  // }
-
   @override
-Controller get entryPoint {
-  final router = Router();
+  Controller get entryPoint {
+    final router = Router();
 
-  // router
-  //   .route('/notes')
-  //   .link(() => NotesController());
+    // router
+    //   .route('/notes')
+    //   .link(() => NotesController());
 
-  router
-  .route('/notes/[:id]')
-  .link(() => NotesController());
+    router
+    .route('/notes/[:id]')
+    .link(() => NotesController(context));
 
-  router
-    .route('/example')
-    .linkFunction((request) async {
-      return Response.ok({'key': 'value'});
-    });
+    router
+      .route('/example')
+      .linkFunction((request) async {
+        return Response.ok({'key': 'value'});
+      });
 
-  return router;
-}
+    return router;
+  }
 }
