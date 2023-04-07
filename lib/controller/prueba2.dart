@@ -4,6 +4,7 @@ import 'package:prueba/model/usuario.dart';
 
 class pruebaContoller extends ResourceController {
   pruebaContoller(this.context);
+  //
   final ManagedContext context;
 
   @Operation.get()
@@ -52,6 +53,4 @@ class pruebaContoller extends ResourceController {
     }
     return Response.ok(deletedUsuario);
   }
-
-
 }
