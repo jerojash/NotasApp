@@ -29,4 +29,29 @@ class pruebaContoller extends ResourceController {
     final insertedUsuario = await query.insert();
     return Response.ok(insertedUsuario);
   }
+
+  @Operation.put('id')
+  Future<Response> updateUsuario(
+      @Bind.path("id") int id, @Bind.body() Usuario body) async {
+    final query = Query<Usuario>(context)
+      ..values = body
+      ..where((u) => u.u_clave).equalTo(id);
+    final updatedUsuario = await query.updateOne();
+    if (updatedUsuario == null) {
+      return Response.notFound();
+    }
+    return Response.ok(updatedUsuario);
+  }
+
+  @Operation.delete('id')
+  Future<Response> deleteUsuario(@Bind.path("id") int id) async {
+    final query = Query<Usuario>(context)..where((u) => u.u_clave).equalTo(id);
+    final deletedUsuario = await query.delete();
+    if (deletedUsuario == null) {
+      return Response.notFound();
+    }
+    return Response.ok(deletedUsuario);
+  }
+
+
 }
