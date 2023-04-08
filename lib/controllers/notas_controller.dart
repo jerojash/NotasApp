@@ -8,28 +8,20 @@ class NotesController extends ResourceController{
 
   final ManagedContext context;  
 
-  @Operation.get()
-  Future<Response> getAllHeroes({@Bind.query('n_clave') String? n_clave}) async {
-    final heroQuery = Query<Note>(context);
-    if (n_clave != null) {
-      heroQuery.where((h) => h.n_clave).contains(n_clave, caseSensitive: false);
-    }
-    final heroes = await heroQuery.fetch();
-
-    return Response.ok(heroes);
-}
+ @Operation.get()
+  Future<Response> getAllNote() async {
+    final noteQuery = Query<Note>(context);
+    return Response.ok(await noteQuery.fetch());
+  }
 
   @Operation.get('id')
-  Future<Response> getHeroByID(@Bind.path('id') int id) async {
+  Future<Response> getNoteByID(@Bind.path("id") int id) async {
     final noteQuery = Query<Note>(context)
-    ..where((h) => h.n_clave).equalTo(id);    
-
+      ..where((n) => n.n_clave).equalTo(id);
     final note = await noteQuery.fetchOne();
-    
-    if (note == false) {
+    if (note == null) {
       return Response.notFound();
     }
-
     return Response.ok(note);
   }
 }

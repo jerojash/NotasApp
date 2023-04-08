@@ -6,19 +6,19 @@ class Note extends ManagedObject<_Note> implements _Note {
 
 class _Note {
   @primaryKey
-  late int n_clave;
+  late int? n_clave;
 
   @Column()
-  late String n_contenido;
+  late String? n_contenido;
 
   @Column()
-  late DateTime n_fecha_creada;
+  late DateTime? n_fecha_creada;
 
   @Column()
   late DateTime ? n_fecha_borrada;
 
   @Column()
-  late String n_tipo;
+  late String? n_tipo;
 
   @Column()
   late String ? fk_carpeta;

@@ -29,24 +29,12 @@ class NotesAppChannel extends ApplicationChannel {
     context = ManagedContext(dataModel, persistentStore);
   }
 
-  @override
-  Controller get entryPoint {
-    final router = Router();
+   @override
+  Controller get entryPoint =>
+      Router()..route('/notes/[:id]').link(() => NotesController(context));
 
-    // router
-    //   .route('/notes')
-    //   .link(() => NotesController());
+  // Prefer to use `link` instead of `linkFunction`.
+  // See: https://conduit.io/docs/http/request_controller/
+  // ignore: unnecessary_lambdas*/
 
-    router
-    .route('/notes/[:id]')
-    .link(() => NotesController(context));
-
-    router
-      .route('/example')
-      .linkFunction((request) async {
-        return Response.ok({'key': 'value'});
-      });
-
-    return router;
-  }
 }
