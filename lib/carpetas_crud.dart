@@ -1,7 +1,7 @@
-/// notes_app
+/// carpetas_crud
 ///
 /// A conduit web server.
-library notes_app;
+library carpetas_crud;
 
 export 'dart:async';
 export 'dart:io';

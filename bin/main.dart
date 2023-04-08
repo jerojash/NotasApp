@@ -1,7 +1,8 @@
-import 'package:notes_app/notes_app.dart';
+import 'package:notes_app/channel.dart';
+import '../test/harness/app.dart';
 
 Future main() async {
-  final app = Application<NotesAppChannel>()
+  final app = Application<CarpetasCrudChannel>()
     ..options.configurationFilePath = "config.yaml"
     ..options.port = 8888;
 

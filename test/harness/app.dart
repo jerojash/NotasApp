@@ -1,12 +1,11 @@
-import 'package:notes_app/notes_app.dart';
-import 'package:conduit_test/conduit_test.dart';
 
-export 'package:notes_app/notes_app.dart';
+import 'package:conduit_test/conduit_test.dart';
+import 'package:notes_app/carpetas_crud.dart';
 export 'package:conduit_test/conduit_test.dart';
 export 'package:test/test.dart';
 export 'package:conduit_core/conduit_core.dart';
 
-/// A testing harness for notes_app.
+/// A testing harness for carpetas_crud.
 ///
 /// A harness for testing an conduit application. Example test file:
 ///
@@ -19,7 +18,7 @@ export 'package:conduit_core/conduit_core.dart';
 ///           });
 ///         }
 ///
-class Harness extends TestHarness<NotesAppChannel> {
+class Harness extends TestHarness<CarpetasCrudChannel> {
   @override
   Future onSetUp() async {}
 
