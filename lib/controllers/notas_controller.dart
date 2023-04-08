@@ -24,4 +24,17 @@ class NotesController extends ResourceController{
     }
     return Response.ok(note);
   }
+
+  @Operation.put('id')
+  Future<Response> updateNote(
+      @Bind.path("id") int id, @Bind.body() Note body) async {
+    final query = Query<Note>(context)
+      ..values = body
+      ..where((n) => n.n_clave).equalTo(id);
+    final note = await query.updateOne();
+    if (note == null) {
+      return Response.notFound();
+    }
+    return Response.ok(note);
+  }
 }
