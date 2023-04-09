@@ -1,5 +1,5 @@
 import 'package:conduit_postgresql/src/postgresql_persistent_store.dart';
-import 'carpetas_crud.dart';
+import 'notes_app.dart';
 import 'controller/carpetas_controller.dart';
 
 /// This type initializes an application.

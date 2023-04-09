@@ -1,6 +1,6 @@
 
 import 'package:conduit_test/conduit_test.dart';
-import 'package:notes_app/carpetas_crud.dart';
+import 'package:notes_app/notes_app.dart';
 export 'package:conduit_test/conduit_test.dart';
 export 'package:test/test.dart';
 export 'package:conduit_core/conduit_core.dart';

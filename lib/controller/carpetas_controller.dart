@@ -21,10 +21,20 @@ class CarpetasController extends ResourceController {
     
     final carpeta = await carpetaQuery.fetchOne();
       
-      if (carpeta == null) {
-        return Response.notFound();
-      }
+    if (carpeta == null) {
+      return Response.notFound();
+    }
 
       return Response.ok(carpeta);
-    }
+  }
+  
+  @Operation.post()
+  Future<Response> createCarpeta(@Bind.body() Carpeta body) async {
+    final query = Query<Carpeta>(context)
+      ..values = body;
+    
+    final insertedCarpeta = await query.insert();
+
+    return Response.ok(insertedCarpeta);
+  }
 }

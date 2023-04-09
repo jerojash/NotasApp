@@ -1,4 +1,4 @@
-import '../carpetas_crud.dart';
+import '../notes_app.dart';
 
 class Carpeta extends ManagedObject<_Carpeta> implements _Carpeta {
   get name => null;
