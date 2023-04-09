@@ -4,8 +4,7 @@
 
 ### Descarga las dependencias necesarias
 
-`sh
-  dart pub get`
+`dart pub get`
 
 ### Copia y edita los 2 archivos de configuración del proyecto:
 
@@ -16,18 +15,15 @@ Y coloca los datos correspondientes para tu conexión de base de datos
 
 ### Realiza las migraciones a tu base de datos local
 
-`sh
-  conduit db upgrade`
+`conduit db upgrade`
 
 ### Agrega el cliente al sistema
 
-`sh
-  dart pub getconduit auth add-client --id ClientId --secret ClientSecret`
+`conduit auth add-client --id ClientId --secret ClientSecret`
 
-### Corre es proyecto
+### Corre el proyecto
 
-`sh
-  conduit serve`
+`conduit serve`
 
 ### Accede a el swagger para crear tu usuario y probar tus endpoints (Opcional se puede usar postman también)
 
