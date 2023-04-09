@@ -185,6 +185,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  fluent_query_builder:
+    dependency: "direct main"
+    description:
+      name: fluent_query_builder
+      sha256: "5e35f9d60e9ce5e6fdd7a688b5a0da106f09947c12c2a49ca742f2b5ad074d08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.5.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -193,6 +201,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  galileo_mysql:
+    dependency: transitive
+    description:
+      name: galileo_mysql
+      sha256: "9d20da3a04f09bc8046ca7acfd5b9b5e81cfae2d9d01bec526eda3080de460cf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  galileo_sqljocky5:
+    dependency: transitive
+    description:
+      name: galileo_sqljocky5
+      sha256: bd97cffc303d13b3c30bb96a1bc01c6ff534f0e3d0b64e6b686cb618f4ce7041
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  galileo_typed_buffer:
+    dependency: transitive
+    description:
+      name: galileo_typed_buffer
+      sha256: "0d69a4738d3c8c619b3f5c76a738870f4a6f45c1ae392e74f66e1248f7ef6937"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   glob:
     dependency: transitive
     description:
@@ -441,6 +473,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "33b31b6beb98100bf9add464a36a8dd03eb10c7a8cf15aeec535e9b054aaf04b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   term_glyph:
     dependency: transitive
     description:
