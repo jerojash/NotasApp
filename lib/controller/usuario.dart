@@ -3,8 +3,7 @@ import 'package:notes_app/notes_app.dart';
 import 'package:notes_app/model/usuario.dart';
 
 class UsuarioContoller extends ResourceController {
-  usuarioContoller(this.context);
-  //
+  UsuarioContoller(this.context);
   final ManagedContext context;
 
   @Operation.get()
@@ -26,14 +25,16 @@ class UsuarioContoller extends ResourceController {
 
   @Operation.post()
   Future<Response> createUsuario(@Bind.body() Usuario body) async {
-    final query = Query<Usuario>(context)..values = body;
+    final query = Query<Usuario>(context)
+      ..values = body;
     final insertedUsuario = await query.insert();
     return Response.ok(insertedUsuario);
   }
 
   @Operation.put('id')
   Future<Response> updateUsuario(
-      @Bind.path("id") int id, @Bind.body() Usuario body) async {
+    @Bind.path("id") int id, @Bind.body() Usuario body
+  ) async {
     final query = Query<Usuario>(context)
       ..values = body
       ..where((u) => u.u_clave).equalTo(id);
@@ -46,7 +47,8 @@ class UsuarioContoller extends ResourceController {
 
   @Operation.delete('id')
   Future<Response> deleteUsuario(@Bind.path("id") int id) async {
-    final query = Query<Usuario>(context)..where((u) => u.u_clave).equalTo(id);
+    final query = Query<Usuario>(context)
+      ..where((u) => u.u_clave).equalTo(id);
     final deletedUsuario = await query.delete();
     if (deletedUsuario == null) {
       return Response.notFound();

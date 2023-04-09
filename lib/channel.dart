@@ -1,8 +1,8 @@
 import 'package:conduit_core/conduit_core.dart';
 import 'package:conduit_core/managed_auth.dart';
+import 'package:conduit_postgresql/src/postgresql_persistent_store.dart';
 
 import 'package:notes_app/notes_app.dart';
-import 'package:notes_app/config.dart';
 import 'package:notes_app/controller/usuario.dart';
 import 'package:notes_app/model/usuario.dart';
 
@@ -23,7 +23,7 @@ class NotesAppChannel extends ApplicationChannel {
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
-    final config = AppConfig(options?.configurationFilePath ?? '../config.yaml');
+    final config = AppConfig(options?.configurationFilePath ?? 'config.yaml');
 
     final dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
     final psc = PostgreSQLPersistentStore.fromConnectionInfo(
@@ -48,7 +48,7 @@ class NotesAppChannel extends ApplicationChannel {
     final router = Router();
 
     router.route('/usuario/[:id]')
-      .link(() => usuarioContoller(context));
+      .link(() => UsuarioContoller(context));
 
     return router;
   }
@@ -56,4 +56,11 @@ class NotesAppChannel extends ApplicationChannel {
   // Prefer to use `link` instead of `linkFunction`.
   // See: https://conduit.io/docs/http/request_controller/
   // ignore: unnecessary_lambdas*/
+}
+
+class AppConfig extends Configuration {
+  AppConfig(String path): super.fromFile(File(path));
+
+  late DatabaseConfiguration database;
+  late String jwt_secret;
 }
