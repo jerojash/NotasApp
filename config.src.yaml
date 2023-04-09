@@ -1,8 +1,6 @@
-# Default server configuration.
 database:
+  username: conduit_test_user
+  password: conduit!
   host: localhost
   port: 5432
-  databaseName: my_app
-  username: postgres
-  password: password
-jwt_secret: "WXY7lj1CWCpuEih8OYLPne2manlnbAfg"
+  databaseName: conduit_test_db

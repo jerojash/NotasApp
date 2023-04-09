@@ -1,66 +1,67 @@
-import 'package:conduit_core/conduit_core.dart';
-import 'package:conduit_core/managed_auth.dart';
-import 'package:conduit_postgresql/src/postgresql_persistent_store.dart';
-
+import 'package:notes_app/controller/identity_controller.dart';
+import 'package:notes_app/controller/register_controller.dart';
+import 'package:notes_app/controller/user_controller.dart';
+import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
-import 'package:notes_app/controller/usuario.dart';
-import 'package:notes_app/model/usuario.dart';
 
-/// This type initializes an application.
-///
-/// Override methods in this class to set up routes and initialize services like
-/// database connections. See http://conduit.io/docs/http/channel/.
 class NotesAppChannel extends ApplicationChannel {
-  /// Initialize services in this method.
-  late ManagedContext context;
+  AuthServer? authServer;
+  ManagedContext? context;
 
-  /// Implement this method to initialize services, read values from [options]
-  /// and any other initialization required before constructing [entryPoint].
-  ///
-  /// This method is invoked prior to [entryPoint] being accessed.
   @override
   Future prepare() async {
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
-    final config = AppConfig(options?.configurationFilePath ?? 'config.yaml');
+    final config = AppConfiguration(options!.configurationFilePath!);
 
-    final dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
-    final psc = PostgreSQLPersistentStore.fromConnectionInfo(
-      config.database.username,
-      config.database.password,
-      config.database.host,
-      config.database.port,
-      config.database.databaseName
-    );
+    context = contextWithConnectionInfo(config.database!);
 
-    context = new ManagedContext(dataModel, psc);
+    final authStorage = ManagedAuthDelegate<User>(context);
+    authServer = AuthServer(authStorage);
   }
 
-  /// Construct the request channel.
-  ///
-  /// Return an instance of some [Controller] that will be the initial receiver
-  /// of all [Request]s.
-  ///
-  /// This method is invoked after [prepare].
   @override
   Controller get entryPoint {
     final router = Router();
 
-    router.route('/usuario/[:id]')
-      .link(() => UsuarioContoller(context));
+    router
+        .route("/files/*")
+        .link(() => Authorizer.basic(authServer!))!
+        .link(() => FileController("public/"));
+
+    router.route("/auth/token").link(() => AuthController(authServer));
+    router
+        .route("/register")
+        .link(() => Authorizer.basic(authServer!))!
+        .link(() => RegisterController(context!, authServer!));
+    router
+        .route("/me")
+        .link(() => Authorizer.bearer(authServer!))!
+        .link(() => IdentityController(context!));
+    router
+        .route("/users/[:id]")
+        .link(() => Authorizer.bearer(authServer!))!
+        .link(() => UserController(context!, authServer!));
 
     return router;
   }
 
-  // Prefer to use `link` instead of `linkFunction`.
-  // See: https://conduit.io/docs/http/request_controller/
-  // ignore: unnecessary_lambdas*/
+  ManagedContext contextWithConnectionInfo(
+      DatabaseConfiguration connectionInfo) {
+    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
+    final psc = PostgreSQLPersistentStore(
+        connectionInfo.username,
+        connectionInfo.password,
+        connectionInfo.host,
+        connectionInfo.port,
+        connectionInfo.databaseName);
+
+    return ManagedContext(dataModel, psc);
+  }
 }
 
-class AppConfig extends Configuration {
-  AppConfig(String path): super.fromFile(File(path));
-
-  late DatabaseConfiguration database;
-  late String jwt_secret;
+class AppConfiguration extends Configuration {
+  AppConfiguration(String fileName) : super.fromFile(File(fileName));
+  DatabaseConfiguration? database;
 }
