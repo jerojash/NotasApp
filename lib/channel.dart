@@ -1,6 +1,10 @@
+import 'package:conduit_core/conduit_core.dart';
+import 'package:conduit_core/managed_auth.dart';
+
 import 'package:notes_app/notes_app.dart';
-import 'controller/usuario.dart';
-import 'package:conduit_postgresql/src/postgresql_persistent_store.dart';
+import 'package:notes_app/config.dart';
+import 'package:notes_app/controller/usuario.dart';
+import 'package:notes_app/model/usuario.dart';
 
 /// This type initializes an application.
 ///
@@ -14,18 +18,23 @@ class NotesAppChannel extends ApplicationChannel {
   /// and any other initialization required before constructing [entryPoint].
   ///
   /// This method is invoked prior to [entryPoint] being accessed.
-  ///
-  /// NO SE TOCA
   @override
   Future prepare() async {
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
-    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
-    final psc = PostgreSQLPersistentStore.fromConnectionInfo(
-        "postgres", "cjmd140102", "localhost", 5432, "Notes");
+    final config = AppConfig(options?.configurationFilePath ?? '../config.yaml');
 
-    context = ManagedContext(dataModel, psc);
+    final dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
+    final psc = PostgreSQLPersistentStore.fromConnectionInfo(
+      config.database.username,
+      config.database.password,
+      config.database.host,
+      config.database.port,
+      config.database.databaseName
+    );
+
+    context = new ManagedContext(dataModel, psc);
   }
 
   /// Construct the request channel.
@@ -35,9 +44,14 @@ class NotesAppChannel extends ApplicationChannel {
   ///
   /// This method is invoked after [prepare].
   @override
-  Controller get entryPoint =>
-      Router()
-       ..route('/usuario/[:id]').link(() => usuarioContoller(context));
+  Controller get entryPoint {
+    final router = Router();
+
+    router.route('/usuario/[:id]')
+      .link(() => usuarioContoller(context));
+
+    return router;
+  }
 
   // Prefer to use `link` instead of `linkFunction`.
   // See: https://conduit.io/docs/http/request_controller/
