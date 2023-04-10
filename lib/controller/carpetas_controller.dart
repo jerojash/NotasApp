@@ -37,4 +37,36 @@ class CarpetasController extends ResourceController {
 
     return Response.ok(insertedCarpeta);
   }
+
+  // Start Update File Endpoint
+  // ----------------------
+    @Operation.put("id")
+  Future<Response> updateFile(
+    @Bind.path("id") int id, 
+		@Bind.body() Carpeta newFile
+	) async {
+    if (request?.authorization?.ownerID != id) {
+      return Response.unauthorized();
+    }
+    final query = Query<Carpeta>(context)
+      ..values = newFile
+      ..where((o) => o.c_clave).equalTo(id);
+    final u = await query.updateOne();
+    if (u == null) {
+      return Response.notFound();
+    }
+    return Response.ok(u);
+  }
+
+// Start Delete File Endpoint
+  // ----------------------
+  @Operation.delete("id")
+  Future<Response> deleteFile(@Bind.path("id") int id) async {
+    if (request?.authorization?.ownerID != id) {
+      return Response.unauthorized();
+    }
+    final query = Query<Carpeta>(context)..where((o) => o.c_clave).equalTo(id);
+    await query.delete();
+    return Response.ok(null);
+  }
 }
