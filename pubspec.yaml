@@ -9,7 +9,7 @@ environment:
 dependencies:
   conduit: ^4.3.7
   conduit_core: ^4.3.6
-  fluent_query_builder: ^5.5.0
+  conduit_postgresql: ^4.3.6
 
 dev_dependencies:
   test: ^1.21.6

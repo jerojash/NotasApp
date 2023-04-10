@@ -1,21 +1,30 @@
 # notes_app
 
-## Running the Application Locally
+## COMANDOS PARA CORRER EL PROYECTO
 
-Run `conduit serve` from this directory to run the application. For running within an IDE, run `bin/main.dart`. By default, a configuration file named `config.yaml` will be used.
+### Descarga las dependencias necesarias
 
-To generate a SwaggerUI client, run `conduit document client`.
+`dart pub get`
 
-## Running Application Tests
+### Copia y edita los 2 archivos de configuración del proyecto:
 
-To run all tests for this application, run the following in this directory:
+- database.src.yaml -> database.yaml
+- config.src.yaml -> config.yaml
 
-```
-pub run test
-```
+Y coloca los datos correspondientes para tu conexión de base de datos
 
-The default configuration file used when testing is `config.src.yaml`. This file should be checked into version control. It also the template for configuration files used in deployment.
+### Realiza las migraciones a tu base de datos local
 
-## Deploying an Application
+`conduit db upgrade`
 
-See the documentation for [Deployment](https://conduit.io/docs/deploy/).
+### Agrega el cliente al sistema
+
+`conduit auth add-client --id ClientId --secret ClientSecret`
+
+### Corre el proyecto
+
+`conduit serve`
+
+### Accede a el swagger para crear tu usuario y probar tus endpoints (Opcional se puede usar postman también)
+
+http://localhost:8888/files/client.html

@@ -1,0 +1,5 @@
+username: conduit_test_user
+password: conduit!
+host: localhost
+port: 5432
+databaseName: conduit_test_db
