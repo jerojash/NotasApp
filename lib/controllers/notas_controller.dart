@@ -36,7 +36,7 @@ class NotesController extends ResourceController {
     if (deletedNote == null) {
       return Response.notFound();
     }
-    return Response.ok(deletedNote);
+    return Response.ok('Nota eliminada');
   }
 
   @Operation.put('id')
