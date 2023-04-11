@@ -45,9 +45,9 @@ class CarpetasController extends ResourceController {
     @Bind.path("id") int id, 
 		@Bind.body() Carpeta newFile
 	) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
+    // if (request?.authorization?.ownerID != id) {
+    //   return Response.unauthorized();
+    // }
     final query = Query<Carpeta>(context)
       ..values = newFile
       ..where((o) => o.c_clave).equalTo(id);
@@ -62,9 +62,9 @@ class CarpetasController extends ResourceController {
   // ----------------------
   @Operation.delete("id")
   Future<Response> deleteFile(@Bind.path("id") int id) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
+    // if (request?.authorization?.ownerID != id) {
+    //   return Response.unauthorized();
+    // }
     final query = Query<Carpeta>(context)..where((o) => o.c_clave).equalTo(id);
     await query.delete();
     return Response.ok(null);
