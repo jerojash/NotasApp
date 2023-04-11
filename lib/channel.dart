@@ -1,7 +1,7 @@
 import 'package:conduit_postgresql/src/postgresql_persistent_store.dart';
 import 'package:notes_app/notes_app.dart';
 
-import 'controllers/notas_controller.dart';
+import 'controller/notas_controller.dart';
 
 /// This type initializes an application.
 ///
