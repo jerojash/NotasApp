@@ -1,3 +1,4 @@
+
 import 'package:notes_app/controller/identity_controller.dart';
 import 'package:notes_app/controller/register_controller.dart';
 import 'package:notes_app/controller/user_controller.dart';
@@ -43,6 +44,10 @@ class NotesAppChannel extends ApplicationChannel {
         .route("/users/[:id]")
         .link(() => Authorizer.bearer(authServer!))!
         .link(() => UserController(context!, authServer!));
+    router
+        .route("/notes/[:id]")
+        .link(() => Authorizer.bearer(authServer!))!
+        .link(() => UserController(context!, authServer!));
 
     return router;
   }
@@ -64,4 +69,5 @@ class NotesAppChannel extends ApplicationChannel {
 class AppConfiguration extends Configuration {
   AppConfiguration(String fileName) : super.fromFile(File(fileName));
   DatabaseConfiguration? database;
+
 }
