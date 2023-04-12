@@ -15,15 +15,12 @@ class _Note {
   late DateTime? n_fecha_creada;
 
   @Column()
-  late DateTime ? n_fecha_borrada;
+  late DateTime? n_fecha_borrada;
 
   @Column()
   late String? n_tipo;
 
+  // TODO RELATIONS WITH ORM
   @Column()
-  late String ? fk_carpeta;
-
-  @Column()
-  late String ? fk_usuario;
-
+  late String? fk_carpeta;
 }
