@@ -1,6 +1,5 @@
 import 'package:notes_app/notes_app.dart';
 import 'package:conduit_test/conduit_test.dart';
-
 export 'package:notes_app/notes_app.dart';
 export 'package:conduit_test/conduit_test.dart';
 export 'package:test/test.dart';
