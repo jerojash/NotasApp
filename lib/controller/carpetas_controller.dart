@@ -3,36 +3,35 @@ import 'package:conduit_core/conduit_core.dart';
 import '../model/carpeta.dart';
 
 class CarpetasController extends ResourceController {
-  
   CarpetasController(this.context);
 
   final ManagedContext context;
 
   @Operation.get()
   Future<Response> getAllCarpetas() async {
-    final carpetaQuery = Query<Carpeta>(context);
+    var carpetaQuery = Query<Carpeta>(context)..join(set: (c) => c.notes);
     return Response.ok(await carpetaQuery.fetch());
   }
 
   @Operation.get('id')
   Future<Response> getCarpetaByID(@Bind.path('id') int id) async {
     final carpetaQuery = Query<Carpeta>(context)
-      ..where((c) => c.c_clave).equalTo(id);
-    
+      ..where((c) => c.c_clave).equalTo(id)
+      ..join(set: (c) => c.notes);
+
     final carpeta = await carpetaQuery.fetchOne();
-      
+
     if (carpeta == null) {
       return Response.notFound();
     }
 
-      return Response.ok(carpeta);
+    return Response.ok(carpeta);
   }
-  
+
   @Operation.post()
   Future<Response> createCarpeta(@Bind.body() Carpeta body) async {
-    final query = Query<Carpeta>(context)
-      ..values = body;
-    
+    final query = Query<Carpeta>(context)..values = body;
+
     final insertedCarpeta = await query.insert();
 
     return Response.ok(insertedCarpeta);
@@ -40,11 +39,9 @@ class CarpetasController extends ResourceController {
 
   // Start Update File Endpoint
   // ----------------------
-    @Operation.put("id")
+  @Operation.put("id")
   Future<Response> updateFile(
-    @Bind.path("id") int id, 
-		@Bind.body() Carpeta newFile
-	) async {
+      @Bind.path("id") int id, @Bind.body() Carpeta newFile) async {
     // if (request?.authorization?.ownerID != id) {
     //   return Response.unauthorized();
     // }

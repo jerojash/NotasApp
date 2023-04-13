@@ -26,10 +26,7 @@ class NotesAppChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router
-        .route("/files/*")
-        .link(() => Authorizer.basic(authServer!))!
-        .link(() => FileController("public/"));
+    router.route("/files/*").link(() => FileController("public/"));
 
     router.route("/auth/token").link(() => AuthController(authServer));
     router
