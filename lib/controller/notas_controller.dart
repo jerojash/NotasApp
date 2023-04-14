@@ -25,7 +25,9 @@ class NotesController extends ResourceController {
 
   @Operation.post()
   Future<Response> createNote(@Bind.body() Note body) async {
-    final query = Query<Note>(context)..values = body;
+    final query = Query<Note>(context)
+      ..values = body
+      ..values.folder.c_clave = body.folder.c_clave;
     final insertedNote = await query.insert();
     return Response.ok(insertedNote);
   }

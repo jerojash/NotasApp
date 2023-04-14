@@ -1,3 +1,4 @@
+import 'package:notes_app/model/carpeta.dart';
 import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
 
@@ -9,8 +10,7 @@ class UserController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAll() async {
-    final query = Query<User>(context);
-    query.join(set: (u) => u.folders);
+    final query = Query<User>(context)..join(set: (u) => u.folders);
 
     final users = await query.fetch();
     return Response.ok(users);
