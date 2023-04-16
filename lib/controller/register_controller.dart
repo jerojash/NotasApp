@@ -1,3 +1,4 @@
+import 'package:notes_app/model/carpeta.dart';
 import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
 
@@ -29,6 +30,36 @@ class RegisterController extends ResourceController {
 
     final response = AuthController.tokenResponse(token);
     final newBody = u.asMap()..["authorization"] = response.body;
+
+
+    //CODIGO PARA INSERTAR UNA CARPETA POR DEFAULT
+    //BY JAVIER ROJAS
+    Map<String, dynamic> bodyCarpeta ={
+        'c_nombre': "default",
+        'c_tipo': 'default'
+    };
+
+    //OBTENGO EL USUARIO CON EL username QUE SE inserto
+    final queryGetUser = Query<User>(context)..where((o) => o.username).equalTo(user.username);
+    
+ 
+    final userAux = await queryGetUser.fetchOne();
+
+    if(userAux !=null){
+      // print('No es nulo');
+      // print(userAux.id);
+
+      final queryCarpeta = Query<Carpeta>(context)
+      ..values.c_nombre = bodyCarpeta['c_nombre'] as String
+      ..values.c_tipo = bodyCarpeta['c_tipo'] as String
+      ..values.user = userAux;
+
+      //INSERTO CARPETA
+      final insertedCarpeta = await queryCarpeta.insert();
+    }
+    
+
+
     return response..body = newBody;
   }
 
