@@ -38,12 +38,10 @@ class NotesAppChannel extends ApplicationChannel {
         .route("/me")
         .link(() => Authorizer.bearer(authServer!))!
         .link(() => IdentityController(context!));
-    router
-        .route("/users/[:id]")
-        .link(() => UserController(context!, authServer!));
-    router
-        .route("/notes/[:id]")
-        .link(() => UserController(context!, authServer!));
+
+    router.route("/users/[:id]").link(() => UserController(context!));
+
+    router.route("/notes/[:id]").link(() => NotesController(context!));
 
     router.route('/carpeta/[:id]').link(() => CarpetasController(context!));
 
