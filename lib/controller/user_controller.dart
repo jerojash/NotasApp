@@ -21,15 +21,28 @@ class UserController extends ResourceController {
     if (request?.authorization?.ownerID != id) {
       return Response.unauthorized();
     }
-    final query = Query<User>(context)
-      ..where((o) => o.id).equalTo(id)
-      ..join(set: (u) => u.folders);
-    //query.join(set: (u) => u.notes);
-    final u = await query.fetchOne();
-    if (u == null) {
+
+    /*
+    final usuario = Query<User>(context)
+      ..where((u) => u.id).equalTo(id);
+    final user= await usuario.fetchOne();
+    final carpetaQuery = Query<Carpeta>(context)
+      ..where((c) => c.user?.id).equalTo(id)
+      ..join(set: (c) => c.notes);
+
+    final carpeta = await carpetaQuery.fetch();*/
+
+    final query = Query<Carpeta>(context)
+      ..where((c) => c.user?.id).equalTo(id)
+      ..join(set: (c) => c.notes)
+      ..join(object: (c) => c.user);
+
+    final userCompleto = await query.fetch();
+
+    if (userCompleto == null) {
       return Response.notFound();
     }
-    return Response.ok(u);
+    return Response.ok(userCompleto);
   }
 
   @Operation.put("id")
