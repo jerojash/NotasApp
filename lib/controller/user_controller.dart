@@ -10,8 +10,7 @@ class UserController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAll() async {
-    final query = Query<User>(context)..join(set: (u) => u.folders);
-
+    final query = Query<User>(context);
     final users = await query.fetch();
     return Response.ok(users);
   }
@@ -35,9 +34,6 @@ class UserController extends ResourceController {
   @Operation.put("id")
   Future<Response> updateUser(
       @Bind.path("id") int id, @Bind.body() User user) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
     final query = Query<User>(context)
       ..values = user
       ..where((o) => o.id).equalTo(id);
@@ -50,9 +46,6 @@ class UserController extends ResourceController {
 
   @Operation.delete("id")
   Future<Response> deleteUser(@Bind.path("id") int id) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
     final query = Query<User>(context)..where((o) => o.id).equalTo(id);
     await query.delete();
     return Response.ok(null);
