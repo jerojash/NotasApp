@@ -1,8 +1,8 @@
 import 'package:notes_app/controller/carpetas_controller.dart';
 import 'package:notes_app/controller/identity_controller.dart';
+import 'package:notes_app/controller/notas_controller.dart';
 import 'package:notes_app/controller/register_controller.dart';
 import 'package:notes_app/controller/user_controller.dart';
-import 'package:notes_app/controller/notas_controller.dart';
 import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
 
@@ -39,11 +39,11 @@ class NotesAppChannel extends ApplicationChannel {
         .link(() => Authorizer.bearer(authServer!))!
         .link(() => IdentityController(context!));
 
-    router.route("/users/[:id]").link(() => UserController(context!));
+    router.route('/carpeta/[:id]').link(() => CarpetasController(context!));
 
     router.route("/notes/[:id]").link(() => NotesController(context!));
 
-    router.route('/carpeta/[:id]').link(() => CarpetasController(context!));
+    router.route("/users/[:id]").link(() => UserController(context!));
 
     return router;
   }

@@ -1,5 +1,4 @@
 import 'package:conduit_core/conduit_core.dart';
-
 import '../model/carpeta.dart';
 
 class CarpetasController extends ResourceController {
@@ -9,7 +8,7 @@ class CarpetasController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAllCarpetas() async {
-    var carpetaQuery = Query<Carpeta>(context)..join(set: (c) => c.notes);
+    final carpetaQuery = Query<Carpeta>(context)..join(set: (c) => c.notes);
     return Response.ok(await carpetaQuery.fetch());
   }
 

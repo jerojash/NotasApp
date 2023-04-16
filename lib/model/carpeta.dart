@@ -1,6 +1,6 @@
-import 'package:notes_app/notes_app.dart';
-import 'package:notes_app/model/user.dart';
 import 'package:notes_app/model/note.dart';
+import 'package:notes_app/model/user.dart';
+import 'package:notes_app/notes_app.dart';
 
 class Carpeta extends ManagedObject<_Carpeta> implements _Carpeta {
   get name => null;

@@ -1,5 +1,5 @@
-import 'package:notes_app/notes_app.dart';
 import 'package:notes_app/model/carpeta.dart';
+import 'package:notes_app/notes_app.dart';
 
 class Note extends ManagedObject<_Note> implements _Note {
   get name => null;
