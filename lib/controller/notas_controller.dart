@@ -2,10 +2,9 @@ import 'package:notes_app/model/note.dart';
 import 'package:notes_app/notes_app.dart';
 
 class NotesController extends ResourceController {
-  NotesController(this.context, this.authServer);
+  NotesController(this.context);
 
   final ManagedContext context;
-  final AuthServer authServer;
 
   @Operation.get()
   Future<Response> getAllNote() async {
