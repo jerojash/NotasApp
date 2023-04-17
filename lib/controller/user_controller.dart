@@ -1,11 +1,12 @@
+import 'package:notes_app/model/carpeta.dart';
 import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
+import 'dart:convert';
 
 class UserController extends ResourceController {
-  UserController(this.context, this.authServer);
+  UserController(this.context);
 
   final ManagedContext context;
-  final AuthServer authServer;
 
   @Operation.get()
   Future<Response> getAll() async {
@@ -16,25 +17,23 @@ class UserController extends ResourceController {
 
   @Operation.get("id")
   Future<Response> getUser(@Bind.path("id") int id) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
     final query = Query<User>(context)..where((o) => o.id).equalTo(id);
     final u = await query.fetchOne();
     if (u == null) {
       return Response.notFound();
     }
-    return Response.ok(u);
+    final carpetaQuery = Query<Carpeta>(context)
+      ..where((c) => c.user?.id).equalTo(id)
+      ..join(set: (c) => c.notes);
+    final carpetas = await carpetaQuery.fetch();
+    final carpetasResponse = [];
+    carpetas.forEach((element) => carpetasResponse.add(element.asMap()));
+    return Response.ok({'user': u.asMap(), 'carpetas': carpetasResponse});
   }
 
   @Operation.put("id")
   Future<Response> updateUser(
-    @Bind.path("id") int id, 
-		@Bind.body() User user
-	) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
+      @Bind.path("id") int id, @Bind.body() User user) async {
     final query = Query<User>(context)
       ..values = user
       ..where((o) => o.id).equalTo(id);
@@ -47,11 +46,7 @@ class UserController extends ResourceController {
 
   @Operation.delete("id")
   Future<Response> deleteUser(@Bind.path("id") int id) async {
-    if (request?.authorization?.ownerID != id) {
-      return Response.unauthorized();
-    }
     final query = Query<User>(context)..where((o) => o.id).equalTo(id);
-    await authServer.revokeAllGrantsForResourceOwner(id);
     await query.delete();
     return Response.ok(null);
   }

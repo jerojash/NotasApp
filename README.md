@@ -21,6 +21,12 @@ Y coloca los datos correspondientes para tu conexión de base de datos
 
 `conduit auth add-client --id ClientId --secret ClientSecret`
 
+## CORRE EL COMANDO (SOLO UNA VEZ)
+
+`conduit document client -d ./public`
+
+
+
 ### Corre el proyecto
 
 `conduit serve`
@@ -28,3 +34,26 @@ Y coloca los datos correspondientes para tu conexión de base de datos
 ### Accede a el swagger para crear tu usuario y probar tus endpoints (Opcional se puede usar postman también)
 
 http://localhost:8888/files/client.html
+
+
+
+### FORMATO PARA INSERTAR EN NOTAS
+{
+  "n_contenido": "string",
+  "n_fecha_creada": "2023-04-05",
+  "n_fecha_borrada": null,
+  "n_tipo": "string",
+  "folder":{"c_clave":1,"c_nombre":"hola","c_tipo": "bla",
+      "user":{
+  "password": "xxx",
+  "email": "moron@gmail.com",
+  "first_name": "carlos",
+  "middle_name": "moron",
+  "first_surname": "julio",
+  "second_surname": "diaz",
+  "id": 3,
+  "username": "morongas"
+    }
+    
+  }
+} 

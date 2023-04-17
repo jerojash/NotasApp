@@ -1,7 +1,12 @@
 import 'package:notes_app/controller/carpetas_controller.dart';
 import 'package:notes_app/controller/identity_controller.dart';
+import 'package:notes_app/controller/notas_controller.dart';
 import 'package:notes_app/controller/register_controller.dart';
 import 'package:notes_app/controller/user_controller.dart';
+import 'package:notes_app/controller/filters/daterange_controller.dart';
+import 'package:notes_app/controller/filters/content_controller.dart';
+import 'package:notes_app/controller/filters/untildate_controller.dart';
+import 'package:notes_app/controller/filters/sincedate_controller.dart';
 import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
 
@@ -26,10 +31,7 @@ class NotesAppChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router
-        .route("/files/*")
-        .link(() => Authorizer.basic(authServer!))!
-        .link(() => FileController("public/"));
+    router.route("/files/*").link(() => FileController("public/"));
 
     router.route("/auth/token").link(() => AuthController(authServer));
     router
@@ -40,16 +42,28 @@ class NotesAppChannel extends ApplicationChannel {
         .route("/me")
         .link(() => Authorizer.bearer(authServer!))!
         .link(() => IdentityController(context!));
-    router
-        .route("/users/[:id]")
-        .link(() => Authorizer.bearer(authServer!))!
-        .link(() => UserController(context!, authServer!));
-    router
-        .route("/notes/[:id]")
-        .link(() => Authorizer.bearer(authServer!))!
-        .link(() => UserController(context!, authServer!));
 
     router.route('/carpeta/[:id]').link(() => CarpetasController(context!));
+
+    router.route("/notes/[:id]").link(() => NotesController(context!));
+
+    router
+        .route("/notes/filterRange")
+        .link(() => DaterangeController(context!));
+
+    router
+        .route("/notes/filterContent")
+        .link(() => ContentController(context!));
+
+    router
+        .route("/notes/filterSinceDate")
+        .link(() => SinceDateController(context!));
+
+    router
+        .route("/notes/filterUntilDate")
+        .link(() => UntilDateController(context!));
+
+    router.route("/users/[:id]").link(() => UserController(context!));
 
     return router;
   }

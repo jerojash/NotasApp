@@ -1,3 +1,4 @@
+import 'package:notes_app/model/carpeta.dart';
 import 'package:notes_app/notes_app.dart';
 
 class User extends ManagedObject<_User>
@@ -6,6 +7,7 @@ class User extends ManagedObject<_User>
   String? password;
 }
 
+@Table(name: "users")
 class _User extends ResourceOwnerTableDefinition {
   @Column(unique: true, indexed: true)
   late String email;
@@ -21,4 +23,6 @@ class _User extends ResourceOwnerTableDefinition {
 
   @Column()
   late String second_surname;
+
+  late ManagedSet<Carpeta> folders;
 }

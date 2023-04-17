@@ -1,11 +1,10 @@
+import 'package:conduit_core/conduit_core.dart';
 import 'package:notes_app/model/note.dart';
-import 'package:notes_app/notes_app.dart';
 
 class NotesController extends ResourceController {
-  NotesController(this.context, this.authServer);
+  NotesController(this.context);
 
   final ManagedContext context;
-  final AuthServer authServer;
 
   @Operation.get()
   Future<Response> getAllNote() async {
@@ -25,7 +24,9 @@ class NotesController extends ResourceController {
 
   @Operation.post()
   Future<Response> createNote(@Bind.body() Note body) async {
-    final query = Query<Note>(context)..values = body;
+    final query = Query<Note>(context)
+      ..values = body
+      ..values.folder.c_clave = body.folder.c_clave;
     final insertedNote = await query.insert();
     return Response.ok(insertedNote);
   }
