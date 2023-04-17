@@ -3,6 +3,10 @@ import 'package:notes_app/controller/identity_controller.dart';
 import 'package:notes_app/controller/notas_controller.dart';
 import 'package:notes_app/controller/register_controller.dart';
 import 'package:notes_app/controller/user_controller.dart';
+import 'package:notes_app/controller/filters/daterange_controller.dart';
+import 'package:notes_app/controller/filters/content_controller.dart';
+import 'package:notes_app/controller/filters/untildate_controller.dart';
+import 'package:notes_app/controller/filters/sincedate_controller.dart';
 import 'package:notes_app/model/user.dart';
 import 'package:notes_app/notes_app.dart';
 
@@ -42,6 +46,22 @@ class NotesAppChannel extends ApplicationChannel {
     router.route('/carpeta/[:id]').link(() => CarpetasController(context!));
 
     router.route("/notes/[:id]").link(() => NotesController(context!));
+
+    router
+        .route("/notes/filterRange")
+        .link(() => DaterangeController(context!));
+
+    router
+        .route("/notes/filterContent")
+        .link(() => ContentController(context!));
+
+    router
+        .route("/notes/filterSinceDate")
+        .link(() => SinceDateController(context!));
+
+    router
+        .route("/notes/filterUntilDate")
+        .link(() => UntilDateController(context!));
 
     router.route("/users/[:id]").link(() => UserController(context!));
 
