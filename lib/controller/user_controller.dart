@@ -46,8 +46,13 @@ class UserController extends ResourceController {
 
   @Operation.delete("id")
   Future<Response> deleteUser(@Bind.path("id") int id) async {
-    final query = Query<User>(context)..where((o) => o.id).equalTo(id);
+    final query = Query<User>(context)
+      ..where((o) => o.id).equalTo(id);
+    final userAux = await query.fetchOne();
+    if (userAux == null){
+      return Response.notFound();
+    }
     await query.delete();
-    return Response.ok(null);
+    return Response.ok('Usuario eliminado correctamente');
   }
 }
