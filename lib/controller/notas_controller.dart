@@ -33,12 +33,14 @@ class NotesController extends ResourceController {
 
   @Operation.delete('id')
   Future<Response> deleteNote(@Bind.path("id") int id) async {
-    final query = Query<Note>(context)..where((u) => u.n_clave).equalTo(id);
-    final deletedNote = await query.delete();
-    if (deletedNote == null) {
+    final query = Query<Note>(context)
+      ..where((u) => u.n_clave).equalTo(id);
+    final noteAux = await query.fetchOne();
+    if (noteAux == null) {
       return Response.notFound();
     }
-    return Response.ok('Nota eliminada');
+    final deletedNote = await query.delete();
+    return Response.ok("Nota eliminada correctamente");
   }
 
   @Operation.put('id')

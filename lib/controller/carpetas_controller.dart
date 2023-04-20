@@ -55,8 +55,13 @@ class CarpetasController extends ResourceController {
   // ----------------------
   @Operation.delete("id")
   Future<Response> deleteFile(@Bind.path("id") int id) async {
-    final query = Query<Carpeta>(context)..where((o) => o.c_clave).equalTo(id);
+    final query = Query<Carpeta>(context)
+      ..where((o) => o.c_clave).equalTo(id);
+    final folderAux = await query.fetchOne();
+    if (folderAux == null) {
+      return Response.notFound();
+    }
     await query.delete();
-    return Response.ok(null);
+    return Response.ok("Carpeta eliminada exitosamente");
   }
 }
